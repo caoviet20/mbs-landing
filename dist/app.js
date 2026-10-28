@@ -55,6 +55,8 @@ if (content) {
   const caption = document.createElement("caption");
   caption.className = "sr-only";
   caption.textContent = "So sánh đầy đủ quyền lợi Membership và Membership Plus";
+  const columns = document.createElement("colgroup");
+  for (let index = 0; index < 3; index++) columns.append(document.createElement("col"));
   const head = document.createElement("thead");
   const headerRow = document.createElement("tr");
   for (const [key, title] of [["benefit", "Quyền lợi"], ["standard", "Membership"], ["plus", "Membership Plus"]]) {
@@ -66,7 +68,7 @@ if (content) {
     headerRow.append(th);
   }
   head.append(headerRow);
-  table.append(caption, head);
+  table.append(caption, columns, head);
   const isPlusExclusive = item => item.standard === "Không" && item.plus === "Có";
   const groups = [
     { key: "shared", exclusive: false },
@@ -91,8 +93,9 @@ if (content) {
         cell.setAttribute("headers", `${label.id} comparison-${key}`);
         const value = document.createElement("span");
         value.className = "comparison-value";
-        value.textContent = group.exclusive ? (key === "plus" ? "Bao gồm" : "Không bao gồm") : item[key];
+        value.textContent = item[key];
         if (item[key] === "Có") cell.append(icon("check"));
+        else if (group.exclusive && key === "standard") cell.append(icon("close"));
         cell.append(value);
         row.append(cell);
       }
@@ -100,8 +103,89 @@ if (content) {
     }
     table.append(body);
   }
-  $("#comparison-table").append(table);
+  const comparison = $("#comparison-table");
+  const start = document.createElement("span");
+  start.className = "comparison-start";
+  start.setAttribute("aria-hidden", "true");
+  const plans = document.createElement("div");
+  plans.className = "comparison-plan-header";
+  const heading = document.createElement("strong");
+  heading.className = "comparison-heading";
+  heading.textContent = "So sánh quyền lợi";
+  plans.append(heading);
+  const actions = document.createElement("div");
+  actions.className = "comparison-mobile-actions";
+  actions.setAttribute("aria-label", "Đăng ký gói đang so sánh");
+  actions.setAttribute("role", "group");
+  actions.inert = true;
+  actions.setAttribute("aria-hidden", "true");
+  for (const [key, title, price] of [["standard", "Membership", "3.900.000đ"], ["plus", "Membership Plus", "15.000.000đ"]]) {
+    const plan = document.createElement("div");
+    plan.className = `comparison-plan comparison-plan-${key}`;
+    const name = document.createElement("strong");
+    name.className = "comparison-plan-name";
+    name.textContent = title;
+    const amount = document.createElement("span");
+    amount.className = "comparison-plan-price";
+    amount.textContent = price;
+    const term = document.createElement("span");
+    term.className = "comparison-plan-term";
+    term.textContent = "/ 3 tháng";
+    const signup = document.createElement("button");
+    signup.type = "button";
+    signup.className = `button button-${key === "plus" ? "primary" : "secondary"} choose-plan`;
+    signup.dataset.plan = key;
+    signup.setAttribute("aria-label", `Đăng ký ${title}`);
+    signup.textContent = "Đăng ký";
+    plan.append(name, amount, term, signup);
+    plans.append(plan);
+    actions.append(signup.cloneNode(true));
+  }
+  const comparisonBody = document.createElement("div");
+  comparisonBody.className = "comparison-body";
+  comparisonBody.append(start, plans, table);
+  comparison.append(comparisonBody, actions);
 }
+
+// Native sticky positioning keeps both controls inside the comparison only.
+function setupComparisonControls() {
+  const comparison = $("#comparison-table");
+  const header = $(".comparison-plan-header", comparison);
+  const actions = $(".comparison-mobile-actions", comparison);
+  if (!header || !actions) return;
+  const details = comparison.closest("details");
+  const siteHeader = $(".site-header");
+  const mobile = matchMedia("(max-width: 680px)");
+  let controlsObserver;
+  function sync() {
+    const navHeight = Math.ceil(siteHeader.getBoundingClientRect().height);
+    const started = $(".comparison-start", comparison).getBoundingClientRect().top <= navHeight;
+    const visible = mobile.matches && details.open && started && $(".menu-toggle").getAttribute("aria-expanded") !== "true";
+    actions.classList.toggle("is-visible", visible);
+    actions.inert = !visible;
+    actions.setAttribute("aria-hidden", String(!visible));
+  }
+  function measure() {
+    const navHeight = Math.ceil(siteHeader.getBoundingClientRect().height);
+    comparison.style.setProperty("--comparison-nav-height", `${navHeight}px`);
+    controlsObserver?.disconnect();
+    sync();
+    if (!("IntersectionObserver" in window)) return;
+    // Observe both controls so fast scrolling into the final rows still updates visibility.
+    controlsObserver = new IntersectionObserver(sync, { rootMargin: `-${navHeight + 1}px 0px 0px`, threshold: [0, 1] });
+    controlsObserver.observe(header);
+    controlsObserver.observe(actions);
+  }
+  const resize = new ResizeObserver(measure);
+  for (const element of [siteHeader, header, actions]) resize.observe(element);
+  details.addEventListener("toggle", measure);
+  window.addEventListener("resize", measure);
+  window.visualViewport?.addEventListener("resize", measure);
+  const state = new MutationObserver(sync);
+  state.observe($(".menu-toggle"), { attributes: true, attributeFilter: ["aria-expanded"] });
+  measure();
+}
+setupComparisonControls();
 
 const stories = content && Array.isArray(content.stories) ? content.stories : [];
 const storySelectors = $("#story-selectors");
@@ -235,7 +319,7 @@ if (stories.length && [storySelectors, storyTitle, storyContext, storyReviewNote
     storyReviewNote.hidden = !story.review;
     storyImage.src = story.image;
     storyImage.alt = story.imageAlt;
-    storyPosition.textContent = `Câu chuyện ${index + 1} / ${stories.length}`;
+    storyPosition.textContent = `${index + 1} / ${stories.length}`;
     storyPrevious.disabled = index === 0;
     storyNext.disabled = index === stories.length - 1;
     revealStorySelector();

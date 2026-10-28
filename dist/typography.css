@@ -368,6 +368,13 @@ body .comparison-table tbody th[scope='row'] {
   text-transform: var(--case-body-small-strong);
 }
 
+body .comparison-heading,
+body .comparison-plan-name { font: var(--type-body-strong); }
+body .comparison-plan-price { font: var(--type-title-h4); }
+body .comparison-plan-term { font: var(--type-body-small); }
+body .comparison-plan > .button,
+body .comparison-mobile-actions > .button { font: var(--type-body-small-strong); }
+
 body .video-caption {
   font: var(--type-body-small-medium);
   letter-spacing: var(--tracking-body-small-medium);
@@ -395,5 +402,7 @@ body .hero-description strong, body .section-intro strong { font: var(--type-bod
   body .comparison-table tbody th[scope='row'] { font: var(--type-body-strong); }
   body .comparison-table tbody td::before { font: var(--type-body-small-medium); }
   .comparison-table tbody td { overflow-wrap: break-word; }
+  body .comparison-plan-name { font: var(--type-body-small-strong); }
+  body .comparison-plan-price { font: var(--type-body-strong); }
   body .footer-bottom, body .footer-company p { font: var(--type-body-small); }
 }

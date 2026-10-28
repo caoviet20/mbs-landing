@@ -138,7 +138,7 @@ window.membershipContent = {
     { label: "Xem lại livestream khi đang là thành viên", standard: "Có", plus: "Có" },
     { label: "Workshop mới nhất hàng tháng", standard: "Xem lại sau 2 tuần, không kèm tài liệu", plus: "Xem lại sau 2 tuần, không kèm tài liệu" },
     { label: "Cập nhật chính sách, thị trường và xu hướng", standard: "Có", plus: "Có" },
-    { label: "Các chiến dịch sáng tạo và chuyển đổi cùng cộng đồng", standard: "Có, theo hoạt động được công bố", plus: "Có, theo hoạt động được công bố" },
+    { label: "Các chiến dịch sáng tạo và chuyển đổi cùng cộng đồng", standard: "Có", plus: "Có" },
     { label: "Cơ hội kết nối với doanh nghiệp và nhà sáng tạo", standard: "Có", plus: "Có" },
     { label: "Tư vấn hỗ trợ 1–1", standard: "Không", plus: "Có" },
     { label: "Review chi tiết kênh và video", standard: "Không", plus: "Có" },
