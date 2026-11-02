@@ -2,7 +2,7 @@
 
 Landing page giới thiệu cộng đồng học tập MakeViral.Pro, giúp người xem tìm hiểu cách học, khám phá quyền lợi và lựa chọn giữa Membership và Membership Plus.
 
-**[Xem landing page](https://makeviral-membership-blue-design.rarebean4.chatgpt.site/)**
+**[Xem landing page](https://makeviral-membership-blue-design.buicaoviet-mkt.chatgpt.site/)**
 
 ## Chạy trên máy
 
@@ -28,9 +28,14 @@ Mở [http://127.0.0.1:4173](http://127.0.0.1:4173). Nhấn `Ctrl+C` tại termi
 | Font và text styles | [dist/typography.css](dist/typography.css) |
 | Điều khiển case study, FAQ, menu và hộp thoại | [dist/app.js](dist/app.js) |
 | Showcase tính năng và chuyển video | [dist/feature-showcase.js](dist/feature-showcase.js) |
+| Điều hướng và trạng thái các bước trong hành trình học | [dist/journey-scroll.js](dist/journey-scroll.js) |
+| Cuộn trang và liên kết đến section | [dist/smooth-scroll.js](dist/smooth-scroll.js) |
+| Thư viện Lenis, stylesheet và giấy phép | [dist/vendor](dist/vendor) |
 | Logo, hình ảnh, font và giấy phép tài sản đi kèm | [dist/assets](dist/assets) |
 
 Giữ đường dẫn tài sản tương đối để trang có thể được phục vụ từ thư mục `dist` trên các nền tảng hosting tĩnh khác.
+
+[Bộ điều khiển cuộn](dist/smooth-scroll.js) dùng Lenis cho cuộn chuột với thời lượng 1,2 giây, giữ cuộn cảm ứng gốc và tắt cuộn mượt khi người dùng bật giảm chuyển động. Giữ [giấy phép Lenis](dist/vendor/lenis-license.txt) khi phân phối lại thư viện.
 
 ## Nguyên tắc khi cập nhật
 
