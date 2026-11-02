@@ -37,6 +37,13 @@
   --pastel-lilac: #EAEFFA;
   --pastel-ice: #E7F2F6;
   --plus-surface: #F5F8FF;
+  --shadow-xxsmall: 0 1px 2px 0 rgb(0 0 0 / 5%);
+  --shadow-xsmall: 0 1px 2px 0 rgb(0 0 0 / 6%), 0 1px 3px 0 rgb(0 0 0 / 10%);
+  --shadow-small: 0 2px 4px -2px rgb(0 0 0 / 6%), 0 4px 8px -2px rgb(0 0 0 / 10%);
+  --shadow-medium: 0 4px 6px -2px rgb(0 0 0 / 3%), 0 12px 16px -4px rgb(0 0 0 / 8%);
+  --shadow-large: 0 8px 8px -4px rgb(0 0 0 / 3%), 0 0 24px -4px rgb(0 0 0 / 8%);
+  --shadow-xlarge: 0 24px 48px -12px rgb(0 0 0 / 18%);
+  --shadow-xxlarge: 0 32px 64px -12px rgb(0 0 0 / 14%);
   --radius: 16px;
   --radius-small: 12px;
   --radius-button: 8px;
@@ -49,6 +56,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+html.lenis { scroll-behavior:auto !important; }
 body { margin: 0; background: var(--background); color: var(--foreground); font: 400 16px/1.65 var(--font-body); -webkit-font-smoothing: antialiased; }
 body:has(dialog[open]) { overflow: hidden; }
 button, input, select, textarea { font: inherit; }
@@ -207,8 +215,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .feature-media-message { margin-top: 8px; color: var(--muted-foreground); }
 .feature-card-copy { display: none; }
 .feature-navigation { display: none; align-items: center; justify-content: flex-end; gap: 8px; }
-.feature-position { margin-right: 8px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
-.feature-navigation .icon-button { border: 1px solid var(--border); background: var(--white); color: var(--primary); }
+.feature-navigation .icon-button { border:0; border-radius:50%; background:var(--secondary); color:var(--foreground); }
 .feature-previous .icon { transform: rotate(180deg); }
 .feature-navigation .icon-button:disabled { opacity: .4; cursor: default; }
 .feature-navigation .icon-button:active:not(:disabled) { background: var(--secondary-hover); }
@@ -681,22 +688,37 @@ dialog > .button { margin-top: 28px; }
 .mentor-achievements span { color:var(--muted-foreground); font:var(--type-body-small); }
 .mentor-copy > .source-note { margin-top:16px; }
 .mentor-copy > .text-link { margin-top:28px; }
-.learning-path { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; margin-bottom:56px; }
-.learning-path li { border-top:1px solid var(--border); padding-top:24px; }
-.learning-path h3 { margin-top:20px; margin-bottom:12px; font:var(--type-title-h4); letter-spacing:var(--tracking-title-h4); }
-.library-subheading { margin-bottom:28px; }
-.library-subheading h3 { font:var(--type-title-h3); letter-spacing:var(--tracking-title-h3); }
-.library-subheading p { margin-top:12px; }
-.membership-walkthrough { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:48px; margin-top:56px; padding-top:48px; border-top:1px solid var(--border); }
-.membership-walkthrough h3 { font:var(--type-title-h3); letter-spacing:var(--tracking-title-h3); }
-.membership-walkthrough p:not(.eyebrow) { margin-top:20px; }
-.membership-walkthrough .text-link { margin-top:20px; }
-.membership-walkthrough .community-video { aspect-ratio:4/3; }
-.join-path { padding:32px; border-radius:var(--radius); background:var(--white); margin-top:48px; scroll-margin-top:110px; }
-.join-path h3 { font:var(--type-title-h4); letter-spacing:var(--tracking-title-h4); }
-.join-path ol { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; margin-top:24px; }
-.join-path li strong { font:var(--type-body-strong); color:var(--foreground); }
-.join-path p { margin-top:12px; font:var(--type-body-normal); }
+/* One ordered journey from registration to practice. */
+.membership-journey { margin:0; padding:0; list-style:none; }
+.journey-step { position:relative; display:grid; grid-template-columns:48px minmax(0,1fr); gap:32px; padding-bottom:64px; scroll-margin-top:112px; }
+.journey-step:not(:last-child)::after { content:''; position:absolute; top:56px; bottom:8px; left:23px; width:1px; background:var(--border); }
+.journey-step:last-child { padding-bottom:0; }
+.journey-number { display:grid; place-items:center; width:48px; height:48px; border:1px solid var(--border); border-radius:50%; background:var(--white); color:var(--primary); font:var(--type-body-strong); font-variant-numeric:tabular-nums; }
+.journey-content { min-width:0; padding-top:8px; }
+.journey-heading { margin-bottom:32px; }
+body .journey-heading > h3 { font:var(--type-title-h3); letter-spacing:var(--tracking-title-h3); }
+.journey-heading > p { max-width:720px; margin-top:16px; }
+body .membership-journey h4 { margin:0; font:var(--type-title-h4); letter-spacing:var(--tracking-title-h4); }
+.journey-registration { max-width:800px; }
+.journey-checklist { display:grid; gap:20px; }
+.journey-checklist li { display:grid; grid-template-columns:20px minmax(0,1fr); gap:12px; }
+.journey-checklist .icon { color:var(--primary); margin-top:2px; }
+.journey-checklist strong { color:var(--foreground); }
+.journey-actions { display:flex; flex-wrap:wrap; gap:16px 24px; align-items:center; margin-top:28px; }
+.journey-direction { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); align-items:start; gap:48px; }
+.journey-prompts { display:grid; gap:20px; }
+.journey-prompts li { display:grid; grid-template-columns:24px minmax(0,1fr); gap:16px; }
+.journey-prompts .icon { color:var(--primary); margin-top:2px; }
+.journey-prompts p { margin-top:8px; }
+.feature-showcase-single { display:block; }
+.feature-showcase-single .feature-selectors,.feature-showcase-single .feature-navigation,.feature-showcase-single .feature-card-copy { display:none; }
+.journey-tour { margin:0 0 28px; }
+.journey-content > .feature-showcase:not(.feature-showcase-single) { grid-template-columns:minmax(220px,1fr) minmax(0,1.7fr); gap:32px; }
+.journey-practice { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; }
+.journey-practice > li { border-top:1px solid var(--border); padding-top:24px; }
+.journey-practice .icon { color:var(--primary); margin-bottom:16px; }
+.journey-practice p { margin-top:12px; }
+.journey-plus-note { margin-top:32px; padding:20px 24px; background:var(--white); border-radius:var(--radius-button); }
 .livestream-layout { display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:64px; }
 .livestream-feature { border-radius:var(--radius); overflow:hidden; background:var(--surface); }
 .livestream-cover { position:relative; aspect-ratio:16/9; }
@@ -728,9 +750,24 @@ dialog > .button { margin-top: 28px; }
   .hero-highlights { gap:24px; }
   .story-media { max-width:380px; width:100%; margin-inline:auto; }
   .story-media-pair .story-phone { max-width:168px; }
-  .membership-walkthrough,.livestream-layout { grid-template-columns:1fr 1fr; gap:32px; }
+  .livestream-layout { grid-template-columns:1fr 1fr; gap:32px; }
+  .journey-step { gap:24px; }
+  .journey-direction { grid-template-columns:1fr; gap:32px; }
+  .journey-content .feature-rail { margin-inline:0; padding-inline:0; scroll-padding-inline:0; }
+  .feature-showcase-single .feature-rail { display:block; overflow:visible; padding:0; }
+  .feature-showcase-single .feature-card { width:100%; }
+  .feature-showcase-single .feature-card-copy,.feature-showcase-single .feature-navigation { display:none; }
 }
 @media (max-width:680px) {
+  .journey-step { display:block; padding-bottom:48px; }
+  .journey-step:not(:last-child)::after { display:none; }
+  .journey-number { width:36px; height:36px; margin-bottom:16px; }
+  .journey-content { padding-top:0; }
+  .journey-heading { margin-bottom:24px; }
+  .journey-actions { align-items:flex-start; flex-direction:column; }
+  .journey-practice { grid-template-columns:1fr; gap:24px; }
+  .journey-plus-note { padding:20px; }
+  .livestream-layout { grid-template-columns:1fr; gap:28px; }
   .hero-flow .hero-actions .button,.hero-flow .hero-actions .text-link { width:100%; justify-content:center; }
   .hero-flow .hero-actions { gap:4px; }
   .hero-highlights { grid-template-columns:1fr; gap:24px; padding-block:24px; }
@@ -741,16 +778,76 @@ dialog > .button { margin-top: 28px; }
   .story-before-placeholder { padding:16px 8px; }
   .story-metrics > div { gap:16px; }
   .mentor-achievements { gap:16px; }
-  .learning-path { grid-template-columns:1fr; gap:28px; margin-bottom:40px; }
-  .learning-path li { display:grid; grid-template-columns:32px minmax(0,1fr); gap:12px 16px; padding-top:20px; }
-  .learning-path .step-number { grid-row:1/3; }
-  .learning-path h3 { margin:0; }
-  .learning-path p { grid-column:2; }
-  .membership-walkthrough,.livestream-layout { grid-template-columns:1fr; gap:28px; }
-  .membership-walkthrough { padding-top:32px; margin-top:40px; }
-  .join-path { padding:24px; margin-top:32px; }
-  .join-path ol { grid-template-columns:1fr; gap:24px; }
   .livestream-topic { padding:24px; }
   .livestream-clips { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:16px; margin:32px calc(-1 * var(--gutter)) 0; padding:0 var(--gutter) 16px; scroll-padding-inline:var(--gutter); overscroll-behavior-x:contain; }
   .livestream-clips article { flex:0 0 min(84%,400px); scroll-snap-align:start; }
+}
+
+/* Pin the journey guide while each step remains in normal document flow. */
+.journey-step-nav { display:none; }
+/* On touch layouts, connect the four steps to the reader's scroll position. */
+@media (max-width:1099px) {
+  #library .membership-journey { --journey-marker:36px; --journey-rail:2px; --journey-gap:16px; }
+  #library .journey-step { display:grid; grid-template-columns:var(--journey-marker) minmax(0,1fr); gap:var(--journey-gap); }
+  #library .journey-number { position:relative; z-index:1; width:var(--journey-marker); height:var(--journey-marker); margin:0; color:var(--muted-foreground); transition:background var(--ease),color var(--ease),box-shadow var(--ease); }
+  #library .journey-content { padding-top:0; }
+  #library .journey-step:not(:last-child)::before,
+  #library .journey-step:not(:last-child)::after { content:''; display:block; position:absolute; top:calc(var(--journey-marker) / 2); bottom:calc(var(--journey-marker) / -2); left:calc((var(--journey-marker) - var(--journey-rail)) / 2); width:var(--journey-rail); pointer-events:none; }
+  #library .journey-step:not(:last-child)::after { background:var(--border); }
+  #library .journey-step:not(:last-child)::before { z-index:1; background:var(--primary); transform:scaleY(0); transform-origin:top; }
+  #library .journey-step.is-complete::before { transform:scaleY(1); }
+  #library .journey-step:is(.is-current,.is-complete) > .journey-number { border-color:var(--primary); background:var(--primary); color:var(--white); }
+  #library .journey-step.is-current > .journey-number { box-shadow:0 0 0 6px var(--secondary-hover); }
+  #library .journey-step.is-current .journey-heading > h3 { color:var(--primary); }
+  #library .journey-step.is-current .journey-heading > p { color:var(--primary-active); }
+  #library .journey-heading > :is(h3,p) { transition:color var(--ease); }
+  @supports (animation-timeline:view(block 35% 65%)) {
+    @media (prefers-reduced-motion:no-preference) {
+      #library .journey-step:not(:last-child)::before { animation:journey-track-fill 1s linear both; animation-timeline:view(block 35% 65%); animation-range:cover 0% cover 100%; }
+    }
+  }
+}
+@media (max-width:680px) {
+  #library .membership-journey { --journey-marker:32px; --journey-gap:12px; }
+  #library .feature-placeholder { padding:16px; }
+}
+@keyframes journey-track-fill { from { transform:scaleY(0); } to { transform:scaleY(1); } }
+@media (min-width:1100px) {
+  .journey-layout { --journey-reveal:400ms cubic-bezier(.16,1,.3,1); display:grid; grid-template-columns:minmax(240px,.78fr) minmax(0,2fr); gap:48px; align-items:start; }
+  .journey-sidebar { position:sticky; top:112px; }
+  .journey-sidebar .section-heading { display:block; margin-bottom:32px; }
+  .journey-sidebar .section-heading > p { width:auto; margin-top:24px; }
+  .journey-sidebar h2 { text-wrap:initial; }
+  .journey-step-nav { display:grid; gap:8px; }
+  .journey-step-nav a { display:grid; grid-template-columns:24px minmax(0,1fr); gap:12px; align-items:center; min-height:48px; padding:12px 16px; color:var(--muted-foreground); border-radius:var(--radius-button); font:var(--type-body-strong); transition:background var(--ease),color var(--ease); }
+  .journey-step-nav a > span { font:var(--type-body-small-medium); font-variant-numeric:tabular-nums; }
+  .journey-step-nav a.is-active { background:var(--white); color:var(--primary); }
+  .journey-step-nav a:active { background:var(--secondary-hover); }
+  .journey-layout .journey-step { display:block; padding-bottom:96px; }
+  .journey-layout .journey-step:last-child { padding-bottom:0; }
+  .journey-layout .journey-step::after,.journey-layout .journey-number { display:none; }
+  .journey-layout .journey-content { padding-top:0; }
+  .journey-layout .journey-heading { margin-bottom:28px; }
+  .journey-layout .journey-direction { gap:32px; }
+  .journey-layout .journey-content > .feature-showcase { gap:24px; }
+  .journey-scroll-ready .journey-step { transition:opacity var(--journey-reveal),transform var(--journey-reveal); }
+  .journey-scroll-ready .journey-step:not(.is-revealed):not(:focus-within) { opacity:.35; transform:translateY(16px); }
+}
+@media (hover:hover) { .journey-step-nav a:hover { background:var(--secondary-hover); color:var(--primary); } }
+@media (min-width:1100px) and (max-height:740px) { .journey-sidebar { position:static; } }
+@media (prefers-reduced-motion:reduce) {
+  .journey-scroll-ready .journey-step { opacity:1; transform:none; transition:none; }
+}
+
+/* Keep the guide on its grid while the feature rail reaches the right viewport edge. */
+.journey-layout > .membership-journey { min-width:0; }
+@media (min-width:901px) {
+  #feature-showcase[data-feature-carousel] { --feature-card-width:clamp(360px,36vw,560px); --feature-card-gap:24px; display:block; width:calc(100% + var(--feature-bleed,0px)); }
+  #feature-showcase[data-feature-carousel] .feature-selectors { display:none; }
+  #feature-showcase[data-feature-carousel] .feature-rail { display:flex; gap:var(--feature-card-gap); overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; border-radius:0; margin:0; padding:4px var(--gutter) 16px 0; scroll-padding-inline:0 var(--gutter); }
+  #feature-showcase[data-feature-carousel] .feature-rail::-webkit-scrollbar { display:none; }
+  #feature-showcase[data-feature-carousel] .feature-card { flex:0 0 var(--feature-card-width); scroll-snap-align:start; }
+  #feature-showcase[data-feature-carousel] .feature-card-copy { display:block; padding:24px 8px 0; }
+  #feature-showcase[data-feature-carousel] .feature-card-description { margin-top:12px; }
+  #feature-showcase[data-feature-carousel] .feature-navigation { display:flex; width:calc(100% - var(--feature-bleed,0px)); margin-top:16px; }
 }
