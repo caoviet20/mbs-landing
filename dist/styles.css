@@ -683,7 +683,7 @@ dialog > .button { margin-top: 28px; }
 .story-metrics strong { color:var(--foreground); font:var(--type-title-h3); }
 .story-metrics > div > span:last-child strong { color:var(--primary); }
 .story-result { padding:16px; background:var(--secondary); border-radius:var(--radius-button); }
-.mentor-achievements { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }
+.mentor-achievements { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:24px; }
 .mentor-achievements > div { display:flex; flex-direction:column; gap:8px; }
 .mentor-achievements span { color:var(--muted-foreground); font:var(--type-body-small); }
 .mentor-copy > .source-note { margin-top:16px; }
@@ -732,7 +732,7 @@ body .membership-journey h4 { margin:0; font:var(--type-title-h4); letter-spacin
 .livestream-copy li > .icon { color:var(--primary); margin-top:4px; }
 .livestream-copy h3 { font:var(--type-title-h4); letter-spacing:var(--tracking-title-h4); }
 .livestream-copy li p { margin-top:12px; }
-.livestream-copy > .text-link { margin-top:28px; }
+.livestream-copy > .button { margin-top:32px; }
 .livestream-clips { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:48px; }
 .livestream-clips article { min-width:0; }
 .clip-placeholder { aspect-ratio:16/9; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:16px; padding:24px; background:var(--secondary); color:var(--primary); border-radius:var(--radius-small); text-align:center; font:var(--type-body-small-medium); }
@@ -777,7 +777,8 @@ body .membership-journey h4 { margin:0; font:var(--type-title-h4); letter-spacin
   .story-media-pair { gap:12px; }
   .story-before-placeholder { padding:16px 8px; }
   .story-metrics > div { gap:16px; }
-  .mentor-achievements { gap:16px; }
+  .mentor-achievements { grid-template-columns:1fr; gap:16px; }
+  .mentor-achievements > div { display:grid; grid-template-columns:104px minmax(0,1fr); gap:20px; align-items:center; }
   .livestream-topic { padding:24px; }
   .livestream-clips { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:16px; margin:32px calc(-1 * var(--gutter)) 0; padding:0 var(--gutter) 16px; scroll-padding-inline:var(--gutter); overscroll-behavior-x:contain; }
   .livestream-clips article { flex:0 0 min(84%,400px); scroll-snap-align:start; }
@@ -825,9 +826,11 @@ body .membership-journey h4 { margin:0; font:var(--type-title-h4); letter-spacin
   .journey-step-nav a:active { background:var(--secondary-hover); }
   .journey-layout .journey-step { display:block; padding-bottom:96px; }
   .journey-layout .journey-step:last-child { padding-bottom:0; }
-  .journey-layout .journey-step::after,.journey-layout .journey-number { display:none; }
+  .journey-layout .journey-step::after { display:none; }
+  .journey-layout .journey-number { position:absolute; top:0; left:0; width:36px; height:36px; margin:0; }
   .journey-layout .journey-content { padding-top:0; }
-  .journey-layout .journey-heading { margin-bottom:28px; }
+  .journey-layout .journey-heading { margin-bottom:28px; padding-left:52px; }
+  .journey-layout .journey-heading > h3 { display:flex; align-items:center; min-height:36px; }
   .journey-layout .journey-direction { gap:32px; }
   .journey-layout .journey-content > .feature-showcase { gap:24px; }
   .journey-scroll-ready .journey-step { transition:opacity var(--journey-reveal),transform var(--journey-reveal); }
