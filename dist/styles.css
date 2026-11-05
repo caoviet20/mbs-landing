@@ -690,7 +690,7 @@ dialog > .button { margin-top: 28px; }
 .mentor-copy > .text-link { margin-top:28px; }
 /* One ordered journey from registration to practice. */
 .membership-journey { margin:0; padding:0; list-style:none; }
-.journey-step { --journey-divider-offset:32px; position:relative; display:grid; grid-template-columns:48px minmax(0,1fr); gap:32px; padding-bottom:64px; scroll-margin-top:112px; }
+.journey-step { --journey-divider-offset:32px; --journey-anchor-base:112px; --journey-anchor-gap:24px; position:relative; display:grid; grid-template-columns:48px minmax(0,1fr); gap:32px; padding-bottom:64px; scroll-margin-top:var(--journey-anchor-margin,var(--journey-anchor-base)); }
 .journey-step:not(:last-child) { background-image:linear-gradient(var(--border),var(--border)); background-repeat:no-repeat; background-size:calc(100% - var(--journey-divider-inset,0px)) 1px; background-position:right 0 bottom var(--journey-divider-offset); }
 .journey-step:not(:last-child)::after { content:''; position:absolute; top:56px; bottom:8px; left:23px; width:1px; background:var(--border); }
 .journey-step:last-child { padding-bottom:0; }
