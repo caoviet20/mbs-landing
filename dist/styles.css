@@ -258,9 +258,8 @@ summary { display: flex; justify-content: space-between; align-items: center; ga
 summary::-webkit-details-marker { display: none; }
 summary .icon { transition: transform var(--ease); }
 details[open] > summary .icon { transform: rotate(45deg); }
-.scope-details { margin-top: 24px; padding-top: 4px; border-top: 1px solid var(--border); }
-.scope-details > p, .policy-details > p { font-size: 12px; padding-bottom: 14px; }
-.scope-details > .review-note, .policy-details > .review-note { margin-bottom: 12px; }
+.policy-details > p { font-size: 12px; padding-bottom: 14px; }
+.policy-details > .review-note { margin-bottom: 12px; }
 
 /* The people behind the learning space. */
 .mentors-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 88px; align-items: center; }
