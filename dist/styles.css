@@ -853,7 +853,7 @@ body .membership-journey h4 { margin:0; font:var(--type-title-h4); letter-spacin
 /* Keep the guide on its grid while the feature rail reaches the right viewport edge. */
 .journey-layout > .membership-journey { min-width:0; }
 @media (min-width:901px) {
-  #feature-showcase[data-feature-carousel] { --feature-card-width:clamp(360px,36vw,560px); --feature-card-gap:24px; display:block; width:calc(100% + var(--feature-bleed,0px)); }
+  #feature-showcase[data-feature-carousel] { --feature-card-width:clamp(440px,48vw,680px); --feature-card-gap:24px; display:block; width:calc(100% + var(--feature-bleed,0px)); }
   #feature-showcase[data-feature-carousel] .feature-selectors { display:none; }
   #feature-showcase[data-feature-carousel] .feature-rail { display:flex; gap:var(--feature-card-gap); overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; border-radius:0; margin:0; padding:4px var(--gutter) 16px 0; scroll-padding-inline:0 var(--gutter); }
   #feature-showcase[data-feature-carousel] .feature-rail::-webkit-scrollbar { display:none; }
@@ -861,4 +861,12 @@ body .membership-journey h4 { margin:0; font:var(--type-title-h4); letter-spacin
   #feature-showcase[data-feature-carousel] .feature-card-copy { display:block; padding:24px 8px 0; }
   #feature-showcase[data-feature-carousel] .feature-card-description { margin-top:12px; }
   #feature-showcase[data-feature-carousel] .feature-navigation { display:flex; width:calc(100% - var(--feature-bleed,0px)); margin-top:16px; }
+}
+#feature-showcase[data-feature-carousel] .feature-media { aspect-ratio:58 / 45; }
+#feature-showcase[data-feature-carousel] .feature-rail.feature-swiper { display:block; overflow:hidden; gap:0; scroll-snap-type:none; touch-action:pan-y; }
+#feature-showcase[data-feature-carousel] .feature-track { align-items:stretch; transition-timing-function:ease; }
+#feature-showcase[data-feature-carousel] .feature-swiper .feature-card { width:var(--feature-card-width); flex-basis:auto; scroll-snap-align:none; }
+@media (max-width:900px) {
+  #feature-showcase[data-feature-carousel] .feature-card { flex-basis:min(96%,640px); }
+  #feature-showcase[data-feature-carousel] .feature-swiper .feature-card { width:min(96%,640px); flex-basis:auto; }
 }

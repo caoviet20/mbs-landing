@@ -1,12 +1,12 @@
 window.membershipContent = {
   // Add each finished clip and optional poster here. Empty sources never start a timer.
   features: [
-    { id: "direction", title: "Định hướng kênh", description: "Làm rõ mục tiêu, người xem và các nhóm chủ đề phù hợp với kênh.", icon: "i-up-right", video: null, poster: null },
+    { id: "direction", title: "Định hướng kênh", description: "Nhận bản định hướng xây kênh dựa trên mục tiêu, chất liệu nội dung, thế mạnh, sản phẩm hoặc dịch vụ và nguồn lực của bạn.", icon: "i-up-right", video: null, poster: null },
     { id: "livestream", title: "Livestream và phát lại", description: "Tham gia các buổi chia sẻ và xem lại nội dung dành cho thành viên.", icon: "i-video", video: null, poster: null },
-    { id: "courses", title: "Khóa học", description: "Học kiến thức nền tảng và cách triển khai video theo nhu cầu của bạn.", icon: "i-book", video: null, poster: null },
-    { id: "discussion", title: "Hỏi đáp - Thảo luận", description: "Đặt câu hỏi, trao đổi trải nghiệm và cùng tháo gỡ vướng mắc trong quá trình làm nội dung.", icon: "i-message", video: null, poster: null },
-    { id: "resources", title: "Tài nguyên sáng tạo", description: "Tham khảo tài liệu và biểu mẫu để chuẩn bị ý tưởng, kế hoạch và nội dung.", icon: "i-file", video: null, poster: null },
-    { id: "news", title: "Tin tức độc quyền", description: "Theo dõi các cập nhật dành riêng cho thành viên trong cộng đồng.", icon: "i-calendar", video: null, poster: null }
+    { id: "courses", title: "Khóa học", description: "Học kiến thức nền tảng và cách triển khai video theo nhu cầu của bạn.", icon: "i-book", video: "assets/feature-courses.mp4", poster: "assets/feature-courses-poster.jpg" },
+    { id: "discussion", title: "Hỏi đáp - Thảo luận", description: "Đặt câu hỏi để đội ngũ MakeViral.Pro giải đáp vướng mắc khi học, xây kênh và làm nội dung.", icon: "i-message", video: "assets/feature-discussion.mp4", poster: "assets/feature-discussion-poster.jpg" },
+    { id: "resources", title: "Tài nguyên sáng tạo", description: "Tham khảo tài liệu và biểu mẫu để chuẩn bị ý tưởng, kế hoạch và nội dung.", icon: "i-file", video: "assets/feature-resources.mp4", poster: "assets/feature-resources-poster.jpg" },
+    { id: "news", title: "Tin tức độc quyền", description: "Theo dõi các cập nhật dành riêng cho thành viên trong cộng đồng.", icon: "i-calendar", video: "assets/feature-news.mp4", poster: "assets/feature-news-poster.jpg" }
   ],
   stories: [
     {
@@ -74,12 +74,12 @@ window.membershipContent = {
     },
     {
       question: "Membership khác gì một khóa học riêng lẻ?",
-      answer: "Membership kết hợp nhiều nội dung học, tài nguyên, livestream và hoạt động cộng đồng trong thời gian bạn tham gia. Bạn có thể chọn phần học theo nhu cầu và trao đổi khi gặp vướng mắc. Nếu cần tư vấn, review và định hướng cá nhân hóa, hãy xem gói Membership Plus.",
+      answer: "Membership kết hợp nội dung học, tài nguyên, livestream và hoạt động cộng đồng. Bạn có thể học theo nhu cầu, đặt câu hỏi để đội ngũ giải đáp và nhận bản định hướng xây kênh phù hợp với mình. Membership Plus có thêm tư vấn 1–1, review kênh và video, gợi ý nội dung và theo sát tiến độ.",
       review: false
     },
     {
       question: "Tôi nên chọn Membership hay Membership Plus?",
-      answer: "Chọn Membership nếu bạn muốn tiếp cận tài nguyên, kiến thức và các hoạt động thành viên để chủ động học và làm. Chọn Membership Plus nếu bạn cần đội ngũ tư vấn theo nhu cầu cụ thể, review kênh và video, gợi ý hướng nội dung và theo sát tiến độ. Hãy xem phạm vi hỗ trợ của Membership Plus trong phần so sánh gói.",
+      answer: "Chọn Membership nếu bạn muốn chủ động học với khóa học và tài nguyên, có bản định hướng xây kênh riêng và được đội ngũ giải đáp trong Hỏi đáp - Thảo luận. Chọn Membership Plus nếu bạn cần thêm tư vấn 1–1, review kênh và video, gợi ý nội dung và theo sát tiến độ.",
       review: false
     },
     {
@@ -104,7 +104,7 @@ window.membershipContent = {
     },
     {
       question: "Membership khác gì nội dung miễn phí?",
-      answer: "Tài khoản miễn phí có thể xem các tài liệu cơ bản được mở. Membership có thêm lộ trình học, khóa học, tài nguyên nâng cao, livestream và hoạt động cộng đồng theo quyền lợi gói trong thời gian tham gia. Membership Plus bổ sung tư vấn, review kênh và định hướng cá nhân hóa. Bạn có thể tạo tài khoản để khám phá tài liệu cơ bản trước khi chọn gói.",
+      answer: "Tài khoản miễn phí có thể xem các tài liệu cơ bản được mở. Membership có thêm lộ trình học, khóa học, tài nguyên nâng cao, livestream, giải đáp từ đội ngũ và bản định hướng xây kênh riêng. Membership Plus bổ sung tư vấn 1–1, review kênh và video, gợi ý nội dung và theo sát tiến độ. Bạn có thể tạo tài khoản để khám phá tài liệu cơ bản trước khi chọn gói.",
       review: false
     },
     {
@@ -131,12 +131,13 @@ window.membershipContent = {
     }
   ],
   comparison: [
+    { label: "Bản định hướng xây kênh cá nhân hóa", standard: "Có", plus: "Có" },
     { label: "Lộ trình học xây kênh cho người mới", standard: "Có", plus: "Có" },
     { label: "Khóa học và workshop hướng dẫn xây kênh", standard: "Có, theo điều kiện từng nội dung", plus: "Có, theo điều kiện từng nội dung" },
     { label: "Kho kiến thức, tài liệu và tài nguyên nâng cao", standard: "Có", plus: "Có" },
+    { label: "Giải đáp từ đội ngũ tại Hỏi đáp - Thảo luận", standard: "Có", plus: "Có" },
     { label: "Livestream dành cho thành viên", standard: "Có", plus: "Có" },
     { label: "Xem lại livestream khi đang là thành viên", standard: "Có", plus: "Có" },
-    { label: "Workshop mới nhất hàng tháng", standard: "Xem lại sau 2 tuần, không kèm tài liệu", plus: "Xem lại sau 2 tuần, không kèm tài liệu" },
     { label: "Cập nhật chính sách, thị trường và xu hướng", standard: "Có", plus: "Có" },
     { label: "Các chiến dịch sáng tạo và chuyển đổi cùng cộng đồng", standard: "Có", plus: "Có" },
     { label: "Cơ hội kết nối với doanh nghiệp và nhà sáng tạo", standard: "Có", plus: "Có" },

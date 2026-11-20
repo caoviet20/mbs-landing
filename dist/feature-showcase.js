@@ -23,6 +23,8 @@
     let scrollTimer;
     let scrollTarget = null;
     let playRequest = 0;
+    let slider = null;
+    let dragging = false;
     const railLayout = () => carousel || mobile.matches;
 
     function element(tag, className, text) {
@@ -69,6 +71,7 @@
         video.muted = true;
         video.defaultMuted = true;
         video.playsInline = true;
+        video.loop = true;
         video.preload = "none";
         video.controls = false;
         video.disablePictureInPicture = true;
@@ -89,9 +92,6 @@
           placeholder.hidden = false;
           message.textContent = "Video hiện chưa tải được";
         });
-        video.addEventListener("ended", () => {
-          if (items.length > 1 && index === active && canPlay()) select((active + 1) % items.length, { scroll: true });
-        });
       }
       const copy = element("div", "feature-card-copy");
       copy.append(element("h4", "feature-card-title", feature.title), element("p", "feature-card-description", feature.description));
@@ -102,7 +102,7 @@
     });
 
     function canPlay() {
-      return items[active].visible && !scrolling && !document.hidden && !reducedMotion.matches;
+      return items[active].visible && !scrolling && !dragging && !document.hidden && !reducedMotion.matches;
     }
 
     function syncPlayback() {
@@ -111,7 +111,7 @@
         if (video && (index !== active || !canPlay())) video.pause();
       });
       const item = items[active];
-      if (!item.video || !canPlay() || (items.length === 1 && item.video.ended)) return;
+      if (!item.video || !canPlay()) return;
       if (!item.video.hasAttribute("src")) {
         item.video.src = item.feature.video;
         item.message.textContent = "Đang tải video…";
@@ -126,6 +126,16 @@
 
     function scrollToCard(behavior) {
       if (!railLayout()) return;
+      if (slider) {
+        scrolling = true;
+        scrollTarget = active;
+        const moved = slider.slideTo(active, behavior === "instant" ? 0 : slider.params.speed);
+        if (!moved) {
+          scrolling = slider.animating;
+          scrollTarget = null;
+        }
+        return;
+      }
       scrollTarget = active;
       const left = items[active].card.offsetLeft - items[0].card.offsetLeft;
       const destination = Math.min(left, rail.scrollWidth - rail.clientWidth);
@@ -179,11 +189,28 @@
         if (!event.defaultPrevented) scrollTarget = null;
       }, { passive: true });
     }
+
+    function nearestCardIndex() {
+      const bounds = rail.getBoundingClientRect();
+      const start = bounds.left + parseFloat(getComputedStyle(rail).paddingLeft);
+      const maximum = rail.scrollWidth - rail.clientWidth;
+      let nearest = active;
+      let distance = Infinity;
+      items.forEach(({ card }, index) => {
+        const position = rail.scrollLeft + card.getBoundingClientRect().left - start;
+        const delta = Math.abs(rail.scrollLeft - Math.max(0, Math.min(position, maximum)));
+        if (delta <= distance) { nearest = index; distance = delta; }
+      });
+      return nearest;
+    }
+
     rail.addEventListener("scroll", () => {
       clearTimeout(scrollTimer);
-      if (!railLayout()) return;
-      scrolling = true;
-      syncPlayback();
+      if (slider || !railLayout()) return;
+      if (!scrolling) {
+        scrolling = true;
+        syncPlayback();
+      }
       scrollTimer = setTimeout(() => {
         scrolling = false;
         if (scrollTarget !== null) {
@@ -191,15 +218,7 @@
           syncPlayback();
           return;
         }
-        const bounds = rail.getBoundingClientRect();
-        const start = bounds.left + parseFloat(getComputedStyle(rail).paddingLeft);
-        let nearest = active;
-        let distance = Infinity;
-        items.forEach(({ card }, index) => {
-          const rect = card.getBoundingClientRect();
-          const delta = Math.abs(rect.left - start);
-          if (delta < distance) { nearest = index; distance = delta; }
-        });
+        const nearest = nearestCardIndex();
         if (nearest !== active) select(nearest, { announce: true });
         else syncPlayback();
       }, 160);
@@ -208,9 +227,17 @@
     mobile.addEventListener("change", () => {
       clearTimeout(scrollTimer);
       scrolling = false;
+      slider?.update();
       select(active, { scroll: true, instant: true });
     });
-    reducedMotion.addEventListener("change", syncPlayback);
+    reducedMotion.addEventListener("change", () => {
+      if (slider) {
+        slider.params.speed = reducedMotion.matches ? 0 : 300;
+        slider.originalParams.speed = slider.params.speed;
+        if (reducedMotion.matches) slider.slideTo(active, 0);
+      }
+      syncPlayback();
+    });
     document.addEventListener("visibilitychange", syncPlayback);
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver(entries => {
@@ -223,6 +250,56 @@
       items.forEach(item => observer.observe(item.media));
     } else {
       items.forEach(item => { item.visible = true; });
+    }
+    if (carousel && window.Swiper) {
+      const track = element("div", "swiper-wrapper feature-track");
+      items.forEach(({ card }) => {
+        card.classList.add("swiper-slide");
+        track.append(card);
+      });
+      rail.append(track);
+      rail.classList.add("swiper", "feature-swiper");
+      function beginMotion() {
+        if (scrolling) return;
+        scrolling = true;
+        syncPlayback();
+      }
+      slider = new window.Swiper(rail, {
+        init: false,
+        slidesPerView: "auto",
+        spaceBetween: 16,
+        breakpoints: { 901: { spaceBetween: 24 } },
+        speed: reducedMotion.matches ? 0 : 300,
+        grabCursor: true,
+        mousewheel: { forceToAxis: true, releaseOnEdges: true },
+        a11y: false,
+        on: {
+          sliderFirstMove() {
+            scrollTarget = null;
+            dragging = true;
+            beginMotion();
+          },
+          beforeTransitionStart: beginMotion,
+          slideChange(swiper) {
+            select(scrollTarget ?? (swiper.isEnd ? items.length - 1 : swiper.activeIndex), { announce: true });
+          },
+          transitionEnd() {
+            scrollTarget = null;
+            scrolling = dragging;
+            syncPlayback();
+          },
+          touchEnd(swiper) {
+            dragging = false;
+            requestAnimationFrame(() => {
+              if (!swiper.animating) {
+                scrolling = false;
+                syncPlayback();
+              }
+            });
+          }
+        }
+      });
+      slider.init();
     }
     select(0);
     if (carousel) {
@@ -237,6 +314,7 @@
           previousWidth = width;
           clearTimeout(scrollTimer);
           scrolling = false;
+          slider?.update();
           scrollToCard("instant");
           syncPlayback();
         }
