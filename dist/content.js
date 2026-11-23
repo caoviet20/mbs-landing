@@ -2,7 +2,8 @@ window.membershipContent = {
   // Add each finished clip and optional poster here. Empty sources never start a timer.
   features: [
     { id: "direction", title: "Định hướng kênh", description: "Nhận bản định hướng xây kênh dựa trên mục tiêu, chất liệu nội dung, thế mạnh, sản phẩm hoặc dịch vụ và nguồn lực của bạn.", icon: "i-up-right", video: null, poster: null },
-    { id: "livestream", title: "Livestream và phát lại", description: "Tham gia các buổi chia sẻ và xem lại nội dung dành cho thành viên.", icon: "i-video", video: null, poster: null },
+    { id: "livestream", title: "Livestream kín cho Membership", description: "Tham gia livestream kín, cập nhật kiến thức và trao đổi cùng Duy Muối.", icon: "i-video", video: "assets/feature-livestream.mp4", poster: "assets/feature-livestream-poster.jpg" },
+    { id: "replays", title: "Xem lại live bất cứ lúc nào", description: "Xem lại các buổi livestream trong thời gian là thành viên.", icon: "i-video", video: "assets/feature-replays.mp4", poster: "assets/feature-replays-poster.jpg" },
     { id: "courses", title: "Khóa học", description: "Học kiến thức nền tảng và cách triển khai video theo nhu cầu của bạn.", icon: "i-book", video: "assets/feature-courses.mp4", poster: "assets/feature-courses-poster.jpg" },
     { id: "discussion", title: "Hỏi đáp - Thảo luận", description: "Đặt câu hỏi để đội ngũ MakeViral.Pro giải đáp vướng mắc khi học, xây kênh và làm nội dung.", icon: "i-message", video: "assets/feature-discussion.mp4", poster: "assets/feature-discussion-poster.jpg" },
     { id: "resources", title: "Tài nguyên sáng tạo", description: "Tham khảo tài liệu và biểu mẫu để chuẩn bị ý tưởng, kế hoạch và nội dung.", icon: "i-file", video: "assets/feature-resources.mp4", poster: "assets/feature-resources-poster.jpg" },
