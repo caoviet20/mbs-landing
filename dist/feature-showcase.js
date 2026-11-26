@@ -22,7 +22,6 @@
     let scrolling = false;
     let scrollTimer;
     let scrollTarget = null;
-    let playRequest = 0;
     let slider = null;
     let dragging = false;
     const railLayout = () => carousel || mobile.matches;
@@ -85,7 +84,7 @@
         media.prepend(video);
         message.textContent = "Video giới thiệu tính năng";
         video.addEventListener("playing", () => {
-          if (index !== active || !canPlay()) video.pause();
+          if (!canPlay(items[index], index)) video.pause();
           else placeholder.hidden = true;
         });
         video.addEventListener("error", () => {
@@ -98,29 +97,40 @@
       card.append(media, copy);
       rail.append(card);
       button.addEventListener("click", () => select(index, { announce: true }));
-      return { button, description, card, media, video, placeholder, message, feature, visible: false };
+      return { button, description, card, media, video, placeholder, message, feature, visible: false, playRequest: 0, playPending: false };
     });
 
-    function canPlay() {
-      return items[active].visible && !scrolling && !dragging && !document.hidden && !reducedMotion.matches;
+    function canPlay(item, index) {
+      return item.visible && (carousel || index === active) && !document.hidden && !reducedMotion.matches;
     }
 
     function syncPlayback() {
-      const request = ++playRequest;
-      items.forEach(({ video }, index) => {
-        if (video && (index !== active || !canPlay())) video.pause();
-      });
-      const item = items[active];
-      if (!item.video || !canPlay()) return;
-      if (!item.video.hasAttribute("src")) {
-        item.video.src = item.feature.video;
-        item.message.textContent = "Đang tải video…";
-      }
-      if (item.video.error) return;
-      item.video.play().catch(() => {
-        if (request !== playRequest) return;
-        item.placeholder.hidden = false;
-        item.message.textContent = "Trình duyệt chưa thể tự phát video";
+      items.forEach((item, index) => {
+        const video = item.video;
+        if (!video) return;
+        if (!canPlay(item, index)) {
+          item.playRequest++;
+          item.playPending = false;
+          video.pause();
+          return;
+        }
+        if (!video.hasAttribute("src")) {
+          video.src = item.feature.video;
+          item.message.textContent = "Đang tải video…";
+        }
+        if (video.error || item.playPending || !video.paused) return;
+        const request = ++item.playRequest;
+        item.playPending = true;
+        video.play().then(() => {
+          if (request === item.playRequest) item.playPending = false;
+          if (!canPlay(item, index)) video.pause();
+        }).catch(() => {
+          if (request !== item.playRequest) return;
+          item.playPending = false;
+          if (!canPlay(item, index)) return;
+          item.placeholder.hidden = false;
+          item.message.textContent = "Trình duyệt chưa thể tự phát video";
+        });
       });
     }
 
@@ -144,7 +154,6 @@
     }
 
     function select(index, { scroll = false, announce = false, instant = false } = {}) {
-      const changed = index !== active;
       active = index;
       items.forEach((item, itemIndex) => {
         const selected = itemIndex === active;
@@ -153,7 +162,6 @@
         item.description.hidden = !selected;
         item.card.classList.toggle("is-active", selected);
         item.card.hidden = !railLayout() && !selected;
-        if (changed && item.video) item.video.currentTime = 0;
       });
       previous.disabled = active === 0;
       next.disabled = active === items.length - 1;
@@ -243,13 +251,28 @@
       const observer = new IntersectionObserver(entries => {
         for (const entry of entries) {
           const item = items.find(item => item.media === entry.target);
-          item.visible = entry.isIntersecting && entry.intersectionRatio >= 0.15;
+          item.visible = entry.isIntersecting && entry.intersectionRatio >= (item.visible ? 0.35 : 0.55);
         }
         syncPlayback();
-      }, { threshold: [0, 0.15] });
+      }, { threshold: [0, 0.35, 0.55] });
       items.forEach(item => observer.observe(item.media));
     } else {
-      items.forEach(item => { item.visible = true; });
+      const updateVisible = () => {
+        const clip = rail.getBoundingClientRect();
+        items.forEach(item => {
+          const rect = item.media.getBoundingClientRect();
+          const width = Math.max(0, Math.min(rect.right, innerWidth, clip.right) - Math.max(rect.left, 0, clip.left));
+          const height = Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, 0));
+          const ratio = rect.width && rect.height ? width * height / (rect.width * rect.height) : 0;
+          item.visible = ratio >= (item.visible ? 0.35 : 0.55);
+        });
+        syncPlayback();
+      };
+      window.addEventListener("scroll", updateVisible, { passive: true });
+      window.addEventListener("resize", updateVisible, { passive: true });
+      rail.addEventListener("scroll", updateVisible, { passive: true });
+      rail.addEventListener("transitionend", updateVisible);
+      requestAnimationFrame(updateVisible);
     }
     if (carousel && window.Swiper) {
       const track = element("div", "swiper-wrapper feature-track");
